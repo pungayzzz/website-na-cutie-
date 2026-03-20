@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Para sa baby dragon ko</title>
+    <style>
+        body {
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background 0.5s ease;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            width: 450px;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .image-box {
+            border: 2px solid rgba(0,0,0,0.3);
+            height: 220px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.4s ease;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* ensures full image */
+            display: block;
+        }
+
+        /* Bottom text for last page */
+        #bottomText {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            color: black; /* changed to black */
+            font-family: 'Cursive', 'Brush Script MT', cursive;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7); /* subtle shadow for contrast */
+            display: none; /* only show on last page */
+        }
+
+        /* Designed letters - white with dark shadow */
+        #message {
+            position: absolute;
+            width: 90%;
+            max-height: 90%;
+            padding: 15px 20px;
+            font-size: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2); 
+            color: white; 
+            font-family: 'Cursive', 'Brush Script MT', cursive; 
+            text-align: center;
+            overflow-y: auto;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.9); /* darker shadow for visibility */
+            line-height: 1.5em;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: 2px solid black;
+            background-color: rgba(255,255,255,0.5);
+            cursor: pointer;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: gray;
+        }
+
+        .active {
+            background-color: black;
+        }
+
+        /* Letter popup */
+        #letterPopup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background-color: rgba(255, 240, 200, 0.95);
+            border: 2px solid #ff99cc;
+            padding: 30px 20px;
+            border-radius: 15px;
+            font-size: 24px;
+            color: #ff3399;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.4);
+            z-index: 1000;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        #letterPopup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        #closeLetter {
+            margin-top: 15px;
+            padding: 8px 15px;
+            border: none;
+            background-color: #ff3399;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="image-box" id="content" onclick="imageClick()">
+        <img id="boxImage" src="">
+        <div id="message"></div>
+        <div id="bottomText">Here’s flowers for you 🌸</div>
+    </div>
+
+    <div class="buttons">
+        <button onclick="prevPage()">Back</button>
+        <button onclick="nextPage()">Next</button>
+    </div>
+
+    <div class="dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+</div>
+
+<!-- Letter popup -->
+<div id="letterPopup">
+    I LOVE U MY BABY DRAGON 💖
+    <br>
+    <button id="closeLetter" onclick="closeLetter()">Close</button>
+</div>
+
+<script>
+    let page = 1;
+
+    const bodyBackgrounds = [
+        "bg1.jpg",
+        "bg2.jpg",
+        "bg3.jpg",
+        "bg4.jpg",
+        "bg5.jpg",
+        "bg6.jpg"
+    ];
+
+    const boxImages = [
+        "bg1.jpg",
+        "bg2.jpg",
+        "bg3.jpg",
+        "bg4.jpg",
+        "bg5.jpg",
+        "flower.jpg"
+    ];
+
+    const messages = [
+        "HI BABY DRAGON KO! I made this website for you. I've been doing this the whole week. Sana ma-appreciate mo siya. Sorry na agad kung panget, first time ko lang gumawa ng sariling website, at naisip ko na ang first website ko ay para sayo. Blee.",
+        "Kaya ko rin po ginawa ito kasi gusto ko po mag-sorry sa dami kong suyo at lambing na utang sayo. Minsan kasi hindi kita malambing dahil sa mga epal sa bahay, you know naman po yun. Kaya ayun, babawi po ako sayo, promise.",
+        "And baby dragon ko, sorry po kung minsan pag may problema ako, kailangan mo po i-invalid muna yung sayo dahil sakin. So sorry po talaga. Sobrang thankful din po ako nung dumating ka sa buhay ko kasi u made my life easier. Sobrang down-down po kasi ako nitong past few months and i don't know what to do po. Nagta-try naman po ako maging okay I think may progress na siya dahil po sayo. Hehehe.",
+        "Thank you po for always being there, for listening, for understanding, for supporting me and sa pag motivate sakin every single day. I feel so lucky to have someone like you who genuinely makes a difference in my life.",
+        "I just want you to know that your presence means the world to me, and I am forever thankful for you. And I hope po I can also make you feel as special as you make me feel every day.",
+        "" // last page has no message
+    ];
+
+    function updatePage() {
+        const boxImage = document.getElementById("boxImage");
+        const message = document.getElementById("message");
+        const dots = document.querySelectorAll(".dot");
+        const content = document.getElementById("content");
+        const bottomText = document.getElementById("bottomText");
+
+        content.style.opacity = 0;
+
+        setTimeout(() => {
+            document.body.style.backgroundImage = `url('${bodyBackgrounds[page-1]}')`;
+            boxImage.src = boxImages[page-1];
+
+            if(messages[page-1] === "") {
+                message.style.display = "none";
+            } else {
+                message.style.display = "block";
+                message.innerHTML = messages[page-1];
+            }
+
+            // Show bottom text only on last page
+            if(page === 6){
+                bottomText.style.display = "block";
+            } else {
+                bottomText.style.display = "none";
+            }
+
+            content.style.opacity = 1;
+
+            dots.forEach(dot => dot.classList.remove("active"));
+            dots[page-1].classList.add("active");
+        }, 200);
+    }
+
+    function nextPage() {
+        if(page < 6){
+            page++;
+            updatePage();
+        }
+    }
+
+    function prevPage() {
+        if(page > 1){
+            page--;
+            updatePage();
+        }
+    }
+
+    function imageClick() {
+        if(page === 6){ // only last page
+            const letter = document.getElementById("letterPopup");
+            letter.classList.add("show");
+        }
+    }
+
+    function closeLetter() {
+        const letter = document.getElementById("letterPopup");
+        letter.classList.remove("show");
+    }
+
+    updatePage();
+</script>
+
+</body>
+</html>
